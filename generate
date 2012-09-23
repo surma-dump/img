@@ -1,28 +1,28 @@
 #!/usr/bin/env sh
 
 echo ">> brightness"
-img brightness < examples/original.png > examples/brightness.png
+img brightness < original.png > examples/brightness.png
 echo ">> contrast"
-img contrast   < examples/original.png > examples/contrast.png
+img contrast   < original.png > examples/contrast.png
 echo ">> greyscale"
-img greyscale  < examples/original.png > examples/greyscale.png
+img greyscale  < original.png > examples/greyscale.png
 echo ">> hxl"
-img hxl        < examples/original.png > examples/hxl.png
+img hxl        < original.png > examples/hxl.png
 echo ">> pixelate"
-img pixelate   < examples/original.png > examples/pixelate.png
+img pixelate   < original.png > examples/pixelate.png
 echo ">> pxl"
-img pxl        < examples/original.png > examples/pxl.png
+img pxl        < original.png > examples/pxl.png
 echo ">> shuffle"
-img shuffle    < examples/original.png > examples/shuffle.png
+img shuffle    < original.png > examples/shuffle.png
 
 
 echo ">> hsl"
 echo "  >> hue"
-img hue        < examples/original.png > examples/hue.png
+img hue        < original.png > examples/hue.png
 echo "  >> saturation"
-img saturation < examples/original.png > examples/saturation.png
+img saturation < original.png > examples/saturation.png
 echo "  >> lightness"
-img lightness  < examples/original.png > examples/lightness.png
+img lightness  < original.png > examples/lightness.png
 
 montage -label "%t" examples/{hue,saturation,lightness}.png -geometry +5+0 examples/hsl.png
 rm examples/{hue,saturation,lightness}.png
@@ -35,13 +35,20 @@ fi
 
 for m in `img blend --modes`; do
   echo "  >> $m"
-  img blend --$m examples/trans.png < examples/original.png > examples/blend/$m.png
+  img blend --$m trans.png < original.png > examples/blend/$m.png
 done
 
-modelist=examples/blend/{$(echo `img --modes` | sed 's/\ /,/g')}.png
+modelist=examples/blend/{$(echo `img blend --modes` | sed 's/\ /,/g')}.png
 eval montage -label "%t" $modelist -geometry 134x200+4+3 examples/blend.png
 rm -r examples/blend
 
 
 echo ">> composition example"
-(img shuffle --horizontal | img hxl | img hue --by -20) < examples/original.png > examples/composed.png
+(img shuffle --horizontal | img hxl | img hue --by -20) < original.png > examples/composed.png
+
+
+for f in `ls examples/*.png`; do
+  convert $f "${f%.*}.jpg"
+done
+
+rm examples/*.png
