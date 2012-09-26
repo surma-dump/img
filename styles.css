@@ -1,0 +1,145 @@
+/* COLOURS: http://www.colourlovers.com/palette/2358713/Sheltered
+
+sand:      hsl(43, 59.2593%, 78.8235%)
+green:     hsl(58, 36.1702%, 72.3529%)
+orange:    hsl(27, 50.5882%, 66.6667%)
+terracota: hsl(4, 34.4978%, 55.0980%)
+brown:     hsl(360, 21.3115%, 23.9216%)
+
+*/
+
+body {
+  background: hsl(43, 59.2593%, 78.8235%);
+  color: hsl(360, 20.3252%, 24.1176%);
+  
+  font: 18px/1.4em 'Delicious';
+  margin: 2.8em;
+  -webkit-hyphens: auto;
+}
+
+.fixed-width {
+  max-width: 600px;
+  display: block;
+}
+
+header {
+  display: block;
+  margin: 2.8em 0;
+  border-bottom: 1px dotted;
+}
+
+h1, h2, h3 {
+  color: hsl(4, 32.7731%, 53.3333%);
+}
+
+h1 {
+  font-size: 2em;
+  line-height: 2.8em;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.4em;
+  line-height: 2.8em;
+  margin: 0;
+}
+
+a {
+  color: hsl(4, 34.4978%, 55.0980%);
+  -webkit-transition: .1s color;
+}
+
+a:hover {
+  color: hsl(27, 50.5882%, 66.6667%);
+  text-decoration: none;
+}
+
+pre {
+  font-size: 0.9em;
+  padding: 1em;
+  background: hsl(27, 50.5882%, 66.6667%);
+  
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+code .sigil {
+  color: hsl(4, 34.4978%, 55.0980%);
+}
+
+code .sep {
+  color: hsl(4, 34.4978%, 55.0980%);
+  background: hsl(58, 36.1702%, 72.3529%);
+}
+
+table {
+  margin-top: 3em;
+  border: none;
+  border-spacing: 0;
+}
+
+table h2 {
+  margin-top: 0;
+  line-height: 1.4em;
+}
+
+table img {
+  -webkit-transition: .2s opacity;
+  height: 500px;
+}
+
+table td {
+  width: 300px;
+  padding: 0;
+  padding-bottom: 50px;
+  height: 500px;
+  vertical-align: top;
+}
+
+table td:first-child {
+  width: 600px;
+  padding-right: 20px;
+}
+
+table td:last-child:hover img {
+  opacity: 0;
+}
+
+table td:last-child {
+  background-image: url(original.png);
+  background-size: 336px 500px;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 1050px) {
+  table td {
+    height: auto;
+  }
+  
+  table td:last-child {
+    display: none;
+  }
+  
+  table td:first-child {
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  body {
+    margin: 0;
+  }
+  
+  h1, h2, p {
+    margin-left: 1.4rem;
+    margin-right: 1.4rem;
+  }
+  
+  pre {
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+  }
+}

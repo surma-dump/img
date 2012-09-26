@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>img</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+  </head>
+  <body>
+  
+    <header class="fixed-width">
+      <h1>img</h1>
+      <p><strong>img</strong> provides a bunch of image. It's (nowhere near) a command line photoshop.</p>
+    </header>
+    
+    <section class="fixed-width">
+      <h1>Usage</h1>
+      <p>Each <strong>img</strong> tool expects an image from <code>STDIN</code> to work on, and will print the result to <code>STDOUT</code>, like so</p>
+      
+      <pre><code><span class="sigil">$</span> img greyscale &lt; input.png &gt; output.png</code></pre>
+      
+      <p>Using this method it is easy to chain multiple commands together using pipes,</p>
+      
+      <pre><code><span class="sigil">$</span> (img greyscale | img pxl | <span class="sep">\</span>
+    img contrast --by 0.05) <span class="sep">\</span>
+    &lt; input.png &gt; output.png</code></pre>
+    
+    </section>
+    
+    <section class="fixed-width">
+      <h1>Tools</h1>
+      <p>Below is a list of each describing each tool, showing how to use them from the command line and within <em>go</em>. The <em>go</em> examples only show code relevant to using the <strong>img</strong> function. And the example images shown are generated using the command with no options provided, they are not produced using the example code shown.</p>
+    </section>
+    
+    <table>
+      <tr>
+        <td>
+          <h2>brightness</h2>
+          <p>Brightness adjusts the brightness of an image. It multiplies each colour channel by the value given.</p>
+          <pre class="user"><code><span class="sigil">$</span> img brightness --by 0.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/brightness"
+
+func brighten(img image.Image) image.Image {
+  return brightness.Adjust(img, 0.1)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/brightness.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>contrast</h2>
+          <p>Contrast adjusts the contrast of an image. This alters the differences between colours. Increasing contrast can make details in the image more visible, while lowering contrast can help reduce excessive sharpness.</p>
+          <pre class="user"><code><span class="sigil">$</span> img contrast --by 0.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/contrast"
+
+func increaseContrast(img image.Image) image.Image {
+  return contrast.Adjust(img, 0.1)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/contrast.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>saturation</h2>
+          <p>Saturation adjusts the saturation of an image. The saturation of a colour refers to the perceived intensity of a colour. So increasing the saturation will make colours brighter and more vivid.</p>
+          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/saturation"
+
+func saturate(img image.Image) image.Image {
+  return saturation.Adjust(img, 0.1)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/saturation.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2>hue</h2>
+          <p>Hue adjusts the hue of an image. The hue can be thought of as the angle a colour is around the colour wheel; with 0&deg; as red, 120&deg; being green, 240&deg; blue and then the cycle repeats with 360&deg; being red again. This shifts the whole circle so a change of 120 would make reds become green, greens become blue and blues become red.</p>
+          <pre class="user"><code><span class="sigil">$</span> img hue --by 180 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/hsla"
+
+func spinColours(img image.Image) image.Image {
+  return hsla.Hue(img, 180)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/hue.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>lightness</h2>
+          <p>Lightness adjusts the lightness of an image. This is similar to brightness but whereas brightness considers the average of the sum of colour channel values, lightness considers the average of the two brightest colour channels.</p>
+          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/lightness"
+
+func lighten(img image.Image) image.Image {
+  return lightness.Adjust(img, 0.1)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/lightness.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>greyscale</h2>
+          <p>Greyscale creates a greyscale version of the image. There are multiple methods of conversion:</p>
+          <ul>
+            <li>average - uses the average of each colour channel</li>
+            <li>lightness - uses the average of the two brightest colour channels</li>
+            <li>luminosity - uses a weighted sum of the colour channels to better represent the colours humans' perceive greatest</li>
+            <li>maximal - uses the greatest value of each colour channel</li>
+            <li>minimal - uses the least value of each colour channel</li>
+            <li>photoshop - modified version of luminosity, (supposedly) used in Adobe Photoshop</li>
+          </ul>
+          <pre class="user"><code><span class="sigil">$</span> img greyscale --maximal &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/greyscale"
+
+func greyify(img image.Image) image.Image {
+  return greyscale.Maximal(img)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/greyscale.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>pixelate</h2>
+          <p>Pixelate creates a pixelated image. It breaks the image into rectangles of the size specified and averages the colours in each.</p>
+          <pre class="user"><code><span class="sigil">$</span> img pixelate --size 20x30 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "pixelate"
+
+func pixelise(img image.Image) image.Image {
+  return pixelate.Pixelate(img, 20, 30)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/pixelate.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>pxl</h2>
+          <p>Pxl pixelates an image into right-angled triangles blocks, averaging the colour in each. By default the &ldquo;direction&rdquo; of the triangles will be chosen based on the &ldquo;closeness&rdquo; of the average colour in the each quadrant.</p>
+          <pre class="user"><code><span class="sigil">$</span> img pxl --size 50x50 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/pixelate"
+
+func pxlise(img image.Image) image.Image {
+  return pixelate.Pxl(img, 50, 50)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/pxl.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>hxl</h2>
+          <p>Hxl pixelates an image into equilateral triangles, averaging the colour in each. The triangles are arranged in a hexagonal pattern.</p>
+          <pre class="user"><code><span class="sigil">$</span> img hxl --width 30 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/pixelate"
+
+func hxlise(img image.Image) image.Image {
+  return pixelate.Hxl(img, 30)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/hxl.jpg"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <h2>blend</h2>
+          <p>Blend takes two images and produces a result by blending the colours in each together. There are <strong>a lot</strong> of different blend modes, <a href="examples/blend-modes.jpg">here is an image showing all of them</a>.</p>
+          <pre class="user"><code><span class="sigil">$</span> img blend --overlay other.png &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "img/blend"
+
+func compose(base, blend image.Image) image.Image {
+  return blend.Overlay(base, blend)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/blend.jpg"/>
+        </td>
+      </tr>
+      
+    </table>
+    
+    <table>
+      <tr>
+        <td>
+          <h1>Using some imagination...</h1>
+          <p>With a little imagination you can combine the tools to produce super cool effects. Use pipes in the shell, or just call multiple functions in code.</p>
+          <pre class="user"><code><span class="sigil">$</span> (img shuffle --horizontal | img hxl | <span class="sep">\</span>
+    img hue --by -20) &lt; input.png &gt; output.png</code></pre>
+                    <pre class="prog"><code>import (
+  "img/shuffle"
+  "img/pixelate"
+  "img/hsla"
+)
+
+// May require more imaginative naming...
+func coolEffect(img image.Image) image.Image {
+  img = shuffle.Horizontal(img)
+  img = pixelate.Hxl(img)
+  return hsla.Hue(img, -20)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/composed.jpg" />
+        </td>
+      </tr>
+    </table>
+      
+    
+  </body>
+</html>
