@@ -25,7 +25,6 @@ echo "  >> lightness"
 img lightness  < original.png > examples/lightness.png
 
 montage -label "%t" examples/{hue,saturation,lightness}.png -geometry +5+0 examples/hsl.png
-rm examples/{hue,saturation,lightness}.png
 
 
 echo ">> blend"
@@ -39,7 +38,8 @@ for m in `img blend --modes`; do
 done
 
 modelist=examples/blend/{$(echo `img blend --modes` | sed 's/\ /,/g')}.png
-eval montage -label "%t" $modelist -geometry 134x200+4+3 examples/blend.png
+eval montage -label "%t" $modelist -geometry 134x200+4+3 examples/blend-modes.png
+mv examples/blend/normal.png examples/blend.png
 rm -r examples/blend
 
 
