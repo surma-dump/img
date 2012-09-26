@@ -119,7 +119,7 @@ table td:last-child {
     height: auto;
   }
   
-  table td:last-child {
+  table td:last-child, .break-hide {
     display: none;
   }
   
