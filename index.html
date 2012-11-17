@@ -8,31 +8,45 @@
     <link rel="stylesheet" href="styles.css" type="text/css" />
   </head>
   <body>
-  
+
     <header class="fixed-width">
       <h1>img</h1>
       <p><strong>img</strong> provides a bunch of image manipulation tools. It's (nowhere near) a command line photoshop.</p>
     </header>
-    
+
+    <section class="fixed-width">
+      <h1>Installation</h1>
+      <p>To install <strong>img</strong> you will need at least <em>go 1</em>, follow the
+        <a href="http://golang.org/doc/install">installation instructions</a> if
+        you don't have it already. Then to install the command line <strong>img</strong>
+        tool run,<p>
+
+      <pre><code><span class="sigil">$</span> go install github.com/hawx/img</code></pre>
+
+      <p>or for the Go library run,</p>
+
+      <pre><code><span class="sigil">$</span> go get github.com/hawx/img</code></pre>
+    </section>
+
     <section class="fixed-width">
       <h1>Usage</h1>
       <p>Each <strong>img</strong> tool expects an image from <code>STDIN</code> to work on, and will print the result to <code>STDOUT</code>, like so</p>
-      
+
       <pre><code><span class="sigil">$</span> img greyscale &lt; input.png &gt; output.png</code></pre>
-      
+
       <p>Using this method it is easy to chain multiple commands together using pipes,</p>
-      
+
       <pre><code><span class="sigil">$</span> (img greyscale | img pxl | <span class="sep">\</span>
     img contrast --by 0.05) <span class="sep">\</span>
     &lt; input.png &gt; output.png</code></pre>
-    
+
     </section>
-    
+
     <section class="fixed-width">
       <h1>Tools</h1>
       <p>Below is a list of each describing each tool, showing how to use them from the command line and within <em>go</em>. The <em>go</em> examples only show code relevant to using the <strong>img</strong> function. <span class="break-hide">And the example images shown are generated using the command with no options provided, they are not produced using the example code shown.</span></p>
     </section>
-    
+
     <table>
       <tr>
         <td>
@@ -49,7 +63,7 @@ func brighten(img image.Image) image.Image {
           <img src="examples/brightness.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>contrast</h2>
@@ -65,11 +79,11 @@ func increaseContrast(img image.Image) image.Image {
           <img src="examples/contrast.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>saturation</h2>
-          <p>Saturation adjusts the saturation of an image. The saturation of a colour refers to the perceived intensity of a colour. So increasing the saturation will make colours brighter and more vivid.</p>
+          <p>Saturation adjusts the saturation of an image. The saturation of a colour refers to the perceived intensity of a colour, so increasing the saturation will make colours brighter and more vivid.</p>
           <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
           <pre class="prog"><code>import "img/saturation"
 
@@ -97,7 +111,7 @@ func spinColours(img image.Image) image.Image {
           <img src="examples/hue.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>lightness</h2>
@@ -113,7 +127,7 @@ func lighten(img image.Image) image.Image {
           <img src="examples/lightness.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>greyscale</h2>
@@ -137,7 +151,7 @@ func greyify(img image.Image) image.Image {
           <img src="examples/greyscale.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>pixelate</h2>
@@ -153,7 +167,7 @@ func pixelise(img image.Image) image.Image {
           <img src="examples/pixelate.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>pxl</h2>
@@ -169,7 +183,7 @@ func pxlise(img image.Image) image.Image {
           <img src="examples/pxl.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>hxl</h2>
@@ -185,7 +199,7 @@ func hxlise(img image.Image) image.Image {
           <img src="examples/hxl.jpg"/>
         </td>
       </tr>
-      
+
       <tr>
         <td>
           <h2>blend</h2>
@@ -201,9 +215,9 @@ func compose(base, blend image.Image) image.Image {
           <img src="examples/blend.jpg"/>
         </td>
       </tr>
-      
+
     </table>
-    
+
     <table>
       <tr>
         <td>
@@ -229,7 +243,7 @@ func coolEffect(img image.Image) image.Image {
         </td>
       </tr>
     </table>
-      
-    
+
+
   </body>
 </html>
