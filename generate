@@ -6,6 +6,8 @@ echo ">> contrast"
 img contrast   < original.png > examples/contrast.png
 echo ">> greyscale"
 img greyscale  < original.png > examples/greyscale.png
+echo ">> levels"
+img levels < original.png > examples/levels.png
 echo ">> hxl"
 img hxl        < original.png > examples/hxl.png
 echo ">> pixelate"
