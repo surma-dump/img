@@ -1,32 +1,35 @@
 #!/usr/bin/env sh
 
+echo ">> blur"
+img blur       < original.png > examples/blur.png
 echo ">> brightness"
 img brightness < original.png > examples/brightness.png
+echo ">> channel"
+img channel    < original.png > examples/channel.png
 echo ">> contrast"
 img contrast   < original.png > examples/contrast.png
+echo ">> gamma"
+img gamma      < original.png > examples/gamma.png
 echo ">> greyscale"
 img greyscale  < original.png > examples/greyscale.png
-echo ">> levels"
-img levels < original.png > examples/levels.png
+echo ">> hue"
+img hue        < original.png > examples/hue.png
 echo ">> hxl"
 img hxl        < original.png > examples/hxl.png
+echo ">> levels"
+img levels     < original.png > examples/levels.png
+echo ">> lightness"
+img lightness  < original.png > examples/lightness.png
 echo ">> pixelate"
 img pixelate   < original.png > examples/pixelate.png
 echo ">> pxl"
 img pxl        < original.png > examples/pxl.png
+echo ">> saturation"
+img saturation < original.png > examples/saturation.png
 echo ">> shuffle"
 img shuffle    < original.png > examples/shuffle.png
-
-
-echo ">> hsl"
-echo "  >> hue"
-img hue        < original.png > examples/hue.png
-echo "  >> saturation"
-img saturation < original.png > examples/saturation.png
-echo "  >> lightness"
-img lightness  < original.png > examples/lightness.png
-
-montage -label "%t" examples/{hue,saturation,lightness}.png -geometry +5+0 examples/hsl.png
+echo ">> tint"
+img tint       < original.png > examples/tint.png
 
 
 echo ">> blend"
@@ -54,3 +57,4 @@ for f in `ls examples/*.png`; do
 done
 
 rm examples/*.png
+jpegoptim examples/*.jpg
