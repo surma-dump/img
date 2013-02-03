@@ -39,7 +39,6 @@
       <pre><code><span class="sigil">$</span> (img greyscale | img pxl | <span class="sep">\</span>
     img contrast --by 0.05) <span class="sep">\</span>
     &lt; input.png &gt; output.png</code></pre>
-
     </section>
 
     <section class="fixed-width">
@@ -50,10 +49,42 @@
     <table>
       <tr>
         <td>
-          <h2>brightness</h2>
+          <h2 id="blend">blend</h2>
+          <p>Blend takes two images and produces a result by blending the colours in each together. There are <strong>a lot</strong> of different blend modes, <a href="examples/blend-modes.jpg">here is an image showing all of them</a>.</p>
+          <pre class="user"><code><span class="sigil">$</span> img blend --overlay other.png &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/blend"
+
+func compose(base, blend image.Image) image.Image {
+  return blend.Overlay(base, blend)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/blend.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="blur">blur</h2>
+          <p>Blur takes an image and blurs it. There is a choice of box or gaussian blur, with multiple methods of calculating edges.</p>
+          <pre class="user"><code><span class="sigil">$</span> img blur --radius 3 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/blur"
+
+func blur(img image.Image) image.Image {
+  return blur.Gaussian(img, utils.Pixel{3,3}, 5, blur.IGNORE)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/blur.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="brightness">brightness</h2>
           <p>Brightness adjusts the brightness of an image. It multiplies each colour channel by the value given.</p>
           <pre class="user"><code><span class="sigil">$</span> img brightness --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/brightness"
+          <pre class="prog"><code>import "github.com/hawx/img/brightness"
 
 func brighten(img image.Image) image.Image {
   return brightness.Adjust(img, 0.1)
@@ -66,10 +97,29 @@ func brighten(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2>contrast</h2>
+          <h2 id="channel">channel</h2>
+          <p>Channel allows you to alter just the red, green, blue or alpha channels of an image.</p>
+          <pre class="user"><code><span class="sigil">$</span> img channel --red --ratio 1.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import (
+  "github.com/hawx/img/channel"
+  "github.com/hawx/img/utils"
+)
+
+func redden(img image.Image) image.Image {
+  return channel.Red(img, utils.Multiplier(1.1))
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/channel.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="contrast">contrast</h2>
           <p>Contrast adjusts the contrast of an image. This alters the differences between colours. Increasing contrast can make details in the image more visible, while lowering contrast can help reduce excessive sharpness.</p>
           <pre class="user"><code><span class="sigil">$</span> img contrast --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/contrast"
+          <pre class="prog"><code>import "github.com/hawx/img/contrast"
 
 func increaseContrast(img image.Image) image.Image {
   return contrast.Adjust(img, 0.1)
@@ -82,55 +132,23 @@ func increaseContrast(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2>saturation</h2>
-          <p>Saturation adjusts the saturation of an image. The saturation of a colour refers to the perceived intensity of a colour, so increasing the saturation will make colours brighter and more vivid.</p>
-          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/saturation"
+          <h2 id="gamma">gamma</h2>
+          <p>Gamma allows you to perform gamma correction on an image, either automatically or manually.</p>
+          <pre class="user"><code><span class="sigil">$</span> img gamma &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/gamma"
 
-func saturate(img image.Image) image.Image {
-  return saturation.Adjust(img, 0.1)
+func gammaCorrect(img image.Image) image.Image {
+  return gamma.Auto(img)
 }</code></pre>
         </td>
         <td>
-          <img src="examples/saturation.jpg"/>
+          <img src="examples/gamma.jpg"/>
         </td>
       </tr>
 
       <tr>
         <td>
-          <h2>hue</h2>
-          <p>Hue adjusts the hue of an image. The hue can be thought of as the angle a colour is around the colour wheel; with 0&deg; as red, 120&deg; being green, 240&deg; blue and then the cycle repeats with 360&deg; being red again. This shifts the whole circle so a change of 120 would make reds become green, greens become blue and blues become red.</p>
-          <pre class="user"><code><span class="sigil">$</span> img hue --by 180 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/hsla"
-
-func spinColours(img image.Image) image.Image {
-  return hsla.Hue(img, 180)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/hue.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h2>lightness</h2>
-          <p>Lightness adjusts the lightness of an image. This is similar to brightness but whereas brightness considers the average of the sum of colour channel values, lightness considers the average of the two brightest colour channels.</p>
-          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/lightness"
-
-func lighten(img image.Image) image.Image {
-  return lightness.Adjust(img, 0.1)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/lightness.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h2>greyscale</h2>
+          <h2 id="greyscale">greyscale</h2>
           <p>Greyscale creates a greyscale version of the image. There are multiple methods of conversion:</p>
           <ul>
             <li>average - uses the average of each colour channel</li>
@@ -141,7 +159,7 @@ func lighten(img image.Image) image.Image {
             <li>photoshop - modified version of luminosity, (supposedly) used in Adobe Photoshop</li>
           </ul>
           <pre class="user"><code><span class="sigil">$</span> img greyscale --maximal &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/greyscale"
+          <pre class="prog"><code>import "github.com/hawx/img/greyscale"
 
 func greyify(img image.Image) image.Image {
   return greyscale.Maximal(img)
@@ -154,42 +172,26 @@ func greyify(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2>pixelate</h2>
-          <p>Pixelate creates a pixelated image. It breaks the image into rectangles of the size specified and averages the colours in each.</p>
-          <pre class="user"><code><span class="sigil">$</span> img pixelate --size 20x30 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "pixelate"
+          <h2 id="hue">hue</h2>
+          <p>Hue adjusts the hue of an image. The hue can be thought of as the angle a colour is around the colour wheel; with 0&deg; as red, 120&deg; being green, 240&deg; blue and then the cycle repeats with 360&deg; being red again. This shifts the whole circle so a change of 120 would make reds become green, greens become blue and blues become red.</p>
+          <pre class="user"><code><span class="sigil">$</span> img hue --by 180 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/hsla"
 
-func pixelise(img image.Image) image.Image {
-  return pixelate.Pixelate(img, 20, 30)
+func spinColours(img image.Image) image.Image {
+  return hsla.Hue(img, 180)
 }</code></pre>
         </td>
         <td>
-          <img src="examples/pixelate.jpg"/>
+          <img src="examples/hue.jpg"/>
         </td>
       </tr>
 
       <tr>
         <td>
-          <h2>pxl</h2>
-          <p>Pxl pixelates an image into right-angled triangles blocks, averaging the colour in each. By default the &ldquo;direction&rdquo; of the triangles will be chosen based on the &ldquo;closeness&rdquo; of the average colour in the each quadrant.</p>
-          <pre class="user"><code><span class="sigil">$</span> img pxl --size 50x50 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/pixelate"
-
-func pxlise(img image.Image) image.Image {
-  return pixelate.Pxl(img, 50, 50)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/pxl.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h2>hxl</h2>
+          <h2 id="hxl">hxl</h2>
           <p>Hxl pixelates an image into equilateral triangles, averaging the colour in each. The triangles are arranged in a hexagonal pattern.</p>
           <pre class="user"><code><span class="sigil">$</span> img hxl --width 30 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/pixelate"
+          <pre class="prog"><code>import "github.com/hawx/img/pixelate"
 
 func hxlise(img image.Image) image.Image {
   return pixelate.Hxl(img, 30)
@@ -202,17 +204,119 @@ func hxlise(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2>blend</h2>
-          <p>Blend takes two images and produces a result by blending the colours in each together. There are <strong>a lot</strong> of different blend modes, <a href="examples/blend-modes.jpg">here is an image showing all of them</a>.</p>
-          <pre class="user"><code><span class="sigil">$</span> img blend --overlay other.png &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "img/blend"
+          <h2 id="levels">levels</h2>
+          <p>Levels allows you to alter the levels of an image. You can (auto) set white and black points, or pass a curve to use, along with the channels to act on.</p>
+          <pre class="user"><code><span class="sigil">$</span> img levels --curve "0,20 50,40 100,100" &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/levels"
 
-func compose(base, blend image.Image) image.Image {
-  return blend.Overlay(base, blend)
+func alterLevels(img image.Image) image.Image {
+  curve := Curve{
+    Point{  0,  20},
+    Point{ 50,  40},
+    Point{100, 100},
+  }
+  return levels.SetCurve(img, levels.RedChannel, curve)
 }</code></pre>
         </td>
         <td>
-          <img src="examples/blend.jpg"/>
+          <img src="examples/levels.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="lightness">lightness</h2>
+          <p>Lightness adjusts the lightness of an image. This is similar to brightness but whereas brightness considers the average of the sum of colour channel values, lightness considers the average of the two brightest colour channels.</p>
+          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/lightness"
+
+func lighten(img image.Image) image.Image {
+  return lightness.Adjust(img, 0.1)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/lightness.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="pixelate">pixelate</h2>
+          <p>Pixelate creates a pixelated image. It breaks the image into rectangles of the size specified and averages the colours in each.</p>
+          <pre class="user"><code><span class="sigil">$</span> img pixelate --size 20x30 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/pixelate"
+
+func pixelise(img image.Image) image.Image {
+  return pixelate.Pixelate(img, 20, 30)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/pixelate.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="pxl">pxl</h2>
+          <p>Pxl pixelates an image into right-angled triangles blocks, averaging the colour in each. By default the &ldquo;direction&rdquo; of the triangles will be chosen based on the &ldquo;closeness&rdquo; of the average colour in the each quadrant.</p>
+          <pre class="user"><code><span class="sigil">$</span> img pxl --size 50x50 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/pixelate"
+
+func pxlise(img image.Image) image.Image {
+  return pixelate.Pxl(img, 50, 50)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/pxl.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="saturation">saturation</h2>
+          <p>Saturation adjusts the saturation of an image. The saturation of a colour refers to the perceived intensity of a colour, so increasing the saturation will make colours brighter and more vivid.</p>
+          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/saturation"
+
+func saturate(img image.Image) image.Image {
+  return saturation.Adjust(img, 0.1)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/saturation.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="shuffle">shuffle</h2>
+          <p>Shuffle randomly swaps pixels around in an image. It can be constrained to only work in the horizontal or vertical direction.</p>
+          <pre class="user"><code><span class="sigil">$</span> img shuffle --vertical &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/shuffle"
+
+func randomize(img image.Image) image.Image {
+  return shuffle.Vertically(img)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/shuffle.jpg"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2 id="tint">tint</h2>
+          <p>Tint an image with another colour. Takes a colour in the `#RRGGBBAA` format.</p>
+          <pre class="user"><code><span class="sigil">$</span> img tint --with '#222b6d33' &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/tint"
+
+func tintPurple(img image.Image) image.Image {
+  with := color.NRGBA{34, 43, 109, 51}
+  return tint.Tint(img, with)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/tint.jpg"/>
         </td>
       </tr>
 
@@ -226,9 +330,9 @@ func compose(base, blend image.Image) image.Image {
           <pre class="user"><code><span class="sigil">$</span> (img shuffle --horizontal | img hxl | <span class="sep">\</span>
     img hue --by -20) &lt; input.png &gt; output.png</code></pre>
                     <pre class="prog"><code>import (
-  "img/shuffle"
-  "img/pixelate"
-  "img/hsla"
+  "github.com/hawx/img/shuffle"
+  "github.com/hawx/img/pixelate"
+  "github.com/hawx/img/hsla"
 )
 
 // May require more imaginative naming...
