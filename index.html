@@ -167,22 +167,6 @@ func greyify(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2 id="hue">hue</h2>
-          <p>Hue adjusts the hue of an image. The hue can be thought of as the angle a colour is around the colour wheel; with 0&deg; as red, 120&deg; being green, 240&deg; blue and then the cycle repeats with 360&deg; being red again. This shifts the whole circle so a change of 120 would make reds become green, greens become blue and blues become red.</p>
-          <pre class="user"><code><span class="sigil">$</span> img hue --by 180 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "github.com/hawx/img/hsla"
-
-func spinColours(img image.Image) image.Image {
-  return hsla.Hue(img, 180)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/hue.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
           <h2 id="hxl">hxl</h2>
           <p>Hxl pixelates an image into equilateral triangles, averaging the colour in each. The triangles are arranged in a hexagonal pattern.</p>
           <pre class="user"><code><span class="sigil">$</span> img hxl --width 30 &lt; input.png &gt; output.png</code></pre>
@@ -220,22 +204,6 @@ func alterLevels(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2 id="lightness">lightness</h2>
-          <p>Lightness adjusts the lightness of an image. This is similar to brightness but whereas brightness considers the average of the sum of colour channel values, lightness considers the average of the two brightest colour channels.</p>
-          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "github.com/hawx/img/lightness"
-
-func lighten(img image.Image) image.Image {
-  return lightness.Adjust(img, 0.1)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/lightness.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
           <h2 id="pixelate">pixelate</h2>
           <p>Pixelate creates a pixelated image. It breaks the image into rectangles of the size specified and averages the colours in each.</p>
           <pre class="user"><code><span class="sigil">$</span> img pixelate --size 20x30 &lt; input.png &gt; output.png</code></pre>
@@ -263,22 +231,6 @@ func pxlise(img image.Image) image.Image {
         </td>
         <td>
           <img src="examples/pxl.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h2 id="saturation">saturation</h2>
-          <p>Saturation adjusts the saturation of an image. The saturation of a colour refers to the perceived intensity of a colour, so increasing the saturation will make colours brighter and more vivid.</p>
-          <pre class="user"><code><span class="sigil">$</span> img saturation --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "github.com/hawx/img/saturation"
-
-func saturate(img image.Image) image.Image {
-  return saturation.Adjust(img, 0.1)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/saturation.jpg"/>
         </td>
       </tr>
 
@@ -323,18 +275,18 @@ func tintPurple(img image.Image) image.Image {
           <h1>Using some imagination...</h1>
           <p>With a little imagination you can combine the tools to produce super cool effects. Use pipes in the shell, or just call multiple functions in code.</p>
           <pre class="user"><code><span class="sigil">$</span> (img shuffle --horizontal | img hxl | <span class="sep">\</span>
-    img hue --by -20) &lt; input.png &gt; output.png</code></pre>
+    img channel --hue --by -20) &lt; input.png &gt; output.png</code></pre>
                     <pre class="prog"><code>import (
   "github.com/hawx/img/shuffle"
   "github.com/hawx/img/pixelate"
-  "github.com/hawx/img/hsla"
+  "github.com/hawx/img/channel"
 )
 
 // May require more imaginative naming...
 func coolEffect(img image.Image) image.Image {
   img = shuffle.Horizontal(img)
   img = pixelate.Hxl(img)
-  return hsla.Hue(img, -20)
+  return channel.Hue(img, utils.Adder(-20))
 }</code></pre>
         </td>
         <td>
