@@ -81,24 +81,19 @@ func blur(img image.Image) image.Image {
 
       <tr>
         <td>
-          <h2 id="brightness">brightness</h2>
-          <p>Brightness adjusts the brightness of an image. It multiplies each colour channel by the value given.</p>
-          <pre class="user"><code><span class="sigil">$</span> img brightness --by 0.1 &lt; input.png &gt; output.png</code></pre>
-          <pre class="prog"><code>import "github.com/hawx/img/brightness"
-
-func brighten(img image.Image) image.Image {
-  return brightness.Adjust(img, 0.1)
-}</code></pre>
-        </td>
-        <td>
-          <img src="examples/brightness.jpg"/>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
           <h2 id="channel">channel</h2>
-          <p>Channel allows you to alter just the red, green, blue or alpha channels of an image.</p>
+          <p>Channel allows you to alter colour channels, separately or together. It can modify the following channels:</p>
+          <ul>
+            <li>red</li>
+            <li>green</li>
+            <li>blue</li>
+            <li>hue</li>
+            <li>saturation</li>
+            <li>lightness</li>
+            <li>brightness</li>
+            <li>alpha</li>
+          </ul>
+
           <pre class="user"><code><span class="sigil">$</span> img channel --red --ratio 1.1 &lt; input.png &gt; output.png</code></pre>
           <pre class="prog"><code>import (
   "github.com/hawx/img/channel"
