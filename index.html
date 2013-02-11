@@ -267,6 +267,23 @@ func tintPurple(img image.Image) image.Image {
         </td>
       </tr>
 
+      <tr>
+        <td>
+          <h2 id="vxl">vxl</h2>
+          <p>Pixelate an image into isometric cubes</p>
+
+          <pre class="user"><code><span class="sigil">$</span> img vxl --rows 14 &lt; input.png &gt; output.png</code></pre>
+          <pre class="prog"><code>import "github.com/hawx/img/pixelate"
+
+func vxlise(img image.Image) image.Image {
+  return pixelate.Vxl(img, 50)
+}</code></pre>
+        </td>
+        <td>
+          <img src="examples/vxl.jpg"/>
+        </td>
+      </tr>
+
     </table>
 
     <table>
