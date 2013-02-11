@@ -30,7 +30,8 @@ echo ">> shuffle"
 img shuffle    < original.png > examples/shuffle.png
 echo ">> tint"
 img tint       < original.png > examples/tint.png
-
+echo ">> vxl"
+img vxl        < original.png > examples/vxl.png
 
 echo ">> blend"
 if [ ! -d examples/blend ]; then
